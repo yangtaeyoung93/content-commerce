@@ -1,5 +1,6 @@
 package com.commerce.content.domain;
 
+import com.commerce.content.domain.tag.Tag;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -8,6 +9,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -39,4 +42,7 @@ public class Article {
         this.createdBy = createdBy;
         createdBy.getPosts().add(this);
     }
+
+    @ManyToMany(mappedBy = "articles")
+    private List<Tag> tags = new ArrayList<>();
 }
