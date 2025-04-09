@@ -1,5 +1,6 @@
 package com.commerce.content.domain;
 
+import com.commerce.content.domain.order.Order;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -36,6 +37,9 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "createdBy")
     private List<Article> posts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders = new ArrayList<>();
 
     @Builder
     public User(String userId, String userName, String password, String phonNumber, Address address) {

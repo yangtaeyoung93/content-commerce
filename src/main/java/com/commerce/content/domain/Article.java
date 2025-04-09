@@ -36,11 +36,11 @@ public class Article {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_idx")
-    private User createdBy;
+    private User user;
 
-    public void setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
-        createdBy.getPosts().add(this);
+    public void setUser(User user) {
+        this.user = user;
+        user.getPosts().add(this);
     }
 
     @ManyToMany(mappedBy = "articles")
