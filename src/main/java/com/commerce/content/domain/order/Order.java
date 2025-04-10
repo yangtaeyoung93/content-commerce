@@ -71,6 +71,6 @@ public class Order {
      */
 
     public int getTotalPrice(){
-        return
+        return orderProduct.stream().mapToInt(price -> getTotalPrice()).sum();
     }
 }
