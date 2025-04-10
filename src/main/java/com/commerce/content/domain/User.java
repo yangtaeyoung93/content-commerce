@@ -35,7 +35,7 @@ public class User implements UserDetails {
     @Embedded
     private Address address;
 
-    @OneToMany(mappedBy = "createdBy")
+    @OneToMany(mappedBy = "user")
     private List<Article> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")

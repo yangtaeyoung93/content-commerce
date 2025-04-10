@@ -1,5 +1,6 @@
 package com.commerce.content.domain.tag;
 
+import com.commerce.content.domain.Article;
 import com.commerce.content.domain.Product;
 import jakarta.persistence.*;
 
@@ -26,6 +27,6 @@ public class Tag {
     @JoinTable(name = "article_tag"
             , joinColumns = @JoinColumn(name = "tag_idx")
             , inverseJoinColumns = @JoinColumn(name = "article_idx"))
-    private List<Product> articles = new ArrayList<>();
+    private List<Article> articles = new ArrayList<>();
 
 }

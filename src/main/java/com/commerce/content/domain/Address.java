@@ -1,5 +1,6 @@
 package com.commerce.content.domain;
 
+import com.commerce.content.dto.AddUserRequest;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -24,4 +25,10 @@ public class Address {
         this.zipcode = zipcode;
     }
 
+    public Address(AddUserRequest dto) {
+        this.state = dto.getState();
+        this.city = dto.getCity();
+        this.street = dto.getStreet();
+        this.zipcode = dto.getZipcode();
+    }
 }
