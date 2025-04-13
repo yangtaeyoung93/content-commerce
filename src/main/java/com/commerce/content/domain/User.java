@@ -32,22 +32,26 @@ public class User implements UserDetails {
 
     private String phonNumber;
 
+    @Enumerated
+    private Role role;
+
     @Embedded
     private Address address;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Article> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Order> orders = new ArrayList<>();
 
     @Builder
-    public User(String userId, String userName, String password, String phonNumber, Address address) {
+    public User(String userId, String userName, String password, String phonNumber, Address address,Role role) {
         this.userId = userId;
         this.userName = userName;
         this.password = password;
         this.phonNumber = phonNumber;
         this.address = address;
+        this.role = role;
     }
 
     @Override
@@ -62,7 +66,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userId;
+        return userName;
     }
 
     @Override

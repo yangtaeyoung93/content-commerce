@@ -1,6 +1,7 @@
 package com.commerce.content.service;
 
 import com.commerce.content.domain.Address;
+import com.commerce.content.domain.Role;
 import com.commerce.content.domain.User;
 import com.commerce.content.dto.AddUserRequest;
 import com.commerce.content.repository.UserRepository;
@@ -25,7 +26,12 @@ public class UserService {
                 .password(bCryptPasswordEncoder.encode(request.getPassword()))
                 .phonNumber(request.getPhoneNumber())
                 .address(new Address(request))
+                .role(Role.SELLER)
                 .build()
                 ).getId();
+    }
+
+    public User getUserWithPosts(User user) {
+        return userRepository.findByIdWithArticles(user.getUserId()).orElseThrow(()->new IllegalArgumentException("not found user"));
     }
 }
