@@ -1,5 +1,7 @@
 package com.commerce.content.service;
 
+import com.commerce.content.domain.User;
+import com.commerce.content.dto.CustomUserDetails;
 import com.commerce.content.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,7 @@ public class UserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        return userRepository.findByUserId(userId).orElseThrow(()->new IllegalArgumentException(userId));
+        User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException(userId));
+        return new CustomUserDetails(user);
     }
 }
