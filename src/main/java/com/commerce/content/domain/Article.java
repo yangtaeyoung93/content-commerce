@@ -3,6 +3,7 @@ package com.commerce.content.domain;
 import com.commerce.content.domain.tag.Tag;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -45,4 +46,14 @@ public class Article {
 
     @ManyToMany(mappedBy = "articles")
     private List<Tag> tags = new ArrayList<>();
+
+    public void addTag(Tag tag) {
+        tags.add(tag);
+        tag.getArticles().add(this); // 양방향 유지!
+    }
+    @Builder
+    public Article(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }
