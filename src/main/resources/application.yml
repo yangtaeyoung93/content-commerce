@@ -15,3 +15,6 @@ logging:
   level:
     #org.hibernate.SQL: debug
     org.hibernate.type.descriptor.sql: trace
+jwt:
+  issuer: content-commerce.com
+  secret-key: content-commerce

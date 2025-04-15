@@ -34,4 +34,8 @@ public class UserService {
     public User getUserWithPosts(User user) {
         return userRepository.findByIdWithArticles(user.getUserId()).orElseThrow(()->new IllegalArgumentException("not found user"));
     }
+
+    public User findByUserId(String userId) {
+        return userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("not found user"));
+    }
 }

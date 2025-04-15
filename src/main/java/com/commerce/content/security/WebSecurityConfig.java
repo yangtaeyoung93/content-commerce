@@ -1,5 +1,7 @@
 package com.commerce.content.security;
 
+import com.commerce.content.config.TokenAuthenticationFilter;
+import com.commerce.content.config.jwt.TokenProvider;
 import com.commerce.content.service.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -12,8 +14,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.net.Authenticator;
@@ -26,6 +30,7 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
+    private final TokenProvider tokenProvider;
     private final UserDetailService userDetailService;
 
 
@@ -47,7 +52,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) {
         try {
-            return http.authorizeHttpRequests(auth -> auth.requestMatchers(
+          /*  return http.authorizeHttpRequests(auth -> auth.requestMatchers(
                             new AntPathRequestMatcher("/login"),
                             new AntPathRequestMatcher("/signup"),
                             new AntPathRequestMatcher("/user")
@@ -57,8 +62,20 @@ public class WebSecurityConfig {
                     .logout(logout -> logout.logoutSuccessUrl("/login")
                             .invalidateHttpSession(true))
                     .csrf(AbstractHttpConfigurer::disable)
-                    .build()
-            ;
+                    .build();*/
+
+            // 토근 인증방식 로그인 변경
+            return http.authorizeHttpRequests(auth -> auth.requestMatchers(
+                            new AntPathRequestMatcher("/login"),
+                            new AntPathRequestMatcher("/signup"),
+                            new AntPathRequestMatcher("/user"),
+                            new AntPathRequestMatcher("/auth/**")
+                    ).permitAll().anyRequest().authenticated())
+                    .addFilterBefore(new TokenAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
+                    .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                    .csrf(AbstractHttpConfigurer::disable)
+                    .build();
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
