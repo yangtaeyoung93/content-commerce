@@ -8,15 +8,16 @@ if(submit){
                 "Content-Type":"application/json",
             },
             body:JSON.stringify({
-                username: document.getElementById('username').value,
+                userId: document.getElementById('username').value,
                 password: document.getElementById('password').value
             })
         }).then(res=>{
             if(!res.ok) throw new Error("로그인 실패");
-            else res.json();
-        }).then( data => {
+            return res.json();
+        }).then(data => {
             localStorage.setItem("accessToken", data.accessToken);
             localStorage.setItem("refreshToken", data.refreshToken);
+            location.replace(`/articles`)
         })
             .catch(err =>{
                 alert("로그인 실패");

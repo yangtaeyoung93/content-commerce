@@ -8,33 +8,33 @@
 <body>
 <div class="p-5 mb-5 text-center</> bg-light">
   <h1 class="mb-3">게시글</h1>
-  <p>안녕하세요, <span th:text="${user.username}"></span>님!</p>
+  <!--<p>안녕하세요, <span th:text="${user.username}"></span>님!</p>-->
   <h4 class="mb-3">공구해요!에 오신 것을 환영합니다.</h4>
 </div>
 
 <div class="container">
-  <th:block th:if="${user.role.name() == 'SELLER'}">
+  <!--<th:block th:if="${user.role.name() == 'SELLER'}">-->
   <button type="button" id="create-btn" th:onclick="|location.href='@{/new-article}'|"
           class="btn btn-secondary btn-sm mb-3">글 등록
   </button>
   </th:block>
-  <div class="row-6" th:each="item : ${articles}">
+  <!--<div class="row-6" th:each="item : ${articles}">-->
     <div class="card">
-      <div class="card-header" th:text="${item.id}">
+      <!--<div class="card-header" th:text="${item.id}">-->
       </div>
       <div class="card-body">
-        <h5 class="card-title" th:text="${item.title}"/>
-        <p class="card-content" th:text="${item.content}"/>
-        <div class="row-6" th:each="tag : ${item.tags}">
-          <span class="card-content" th:text="${tag.name + '&nbsp;'}"/>
-        </div>
+       <!-- <h5 class="card-title" th:text="${item.title}"/>
+        <p class="card-content" th:text="${item.content}"/>-->
+       <!-- <div class="row-6" th:each="tag : ${item.tags}">
+         &lt;!&ndash; <span class="card-content" th:text="${tag.name + '&nbsp;'}"/>&ndash;&gt;
+        </div>-->
 
-        <a th:href="@{/articles/{id}(id=${item.id})}" class="btn btn-primary">보러 가기</a>
+        <!--<a th:href="@{/articles/{id}(id=${item.id})}" class="btn btn-primary">보러 가기</a>-->
       </div>
     </div>
     <br>
   </div>
-  <button type="button" class="btn btn-secondary" onclick="location.href='/logout'" >로그아웃</button>
+  <button type="button" class="btn btn-secondary" id="logout-btn" >로그아웃</button>
 </div>
 <script src="/js/article.js"></script>
 </body>

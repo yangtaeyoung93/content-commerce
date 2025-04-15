@@ -28,4 +28,8 @@ public class RefreshTokenService {
 
         return newRefreshToken;
     }
+
+    public void deleteByUserId(Long id) {
+        refreshTokenRepository.deleteById(id);
+    }
 }
