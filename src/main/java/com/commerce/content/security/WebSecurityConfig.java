@@ -70,7 +70,9 @@ public class WebSecurityConfig {
                             new AntPathRequestMatcher("/signup"),
                             new AntPathRequestMatcher("/user"),
                             new AntPathRequestMatcher("/auth/**")
-                    ).permitAll().anyRequest().authenticated())
+                    ).permitAll()
+                     .requestMatchers("/api/**").authenticated()
+                    .anyRequest().permitAll())
                     .addFilterBefore(new TokenAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
                     .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                     .csrf(AbstractHttpConfigurer::disable)
