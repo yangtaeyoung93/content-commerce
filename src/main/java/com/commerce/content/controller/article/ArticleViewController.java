@@ -23,13 +23,13 @@ public class ArticleViewController {
     private final ArticleService articleService;
 
     @GetMapping("/articles")
-    public String getArticles(@AuthenticationPrincipal CustomUserDetails userDetails, Model model) {
+    public String getArticles(Model model) {
 
-        List<ArticleListViewResponse> articles =
+       /* List<ArticleListViewResponse> articles =
                 articleService.getArticles().stream().map(ArticleListViewResponse::new).toList();
 
         model.addAttribute("articles", articles);
-        model.addAttribute("user", userDetails.getUser());
+        model.addAttribute("user", userDetails.getUser());*/
 
         return "articleList";
     }

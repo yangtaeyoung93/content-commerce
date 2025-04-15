@@ -11,9 +11,15 @@ if(submit){
                 username: document.getElementById('username').value,
                 password: document.getElementById('password').value
             })
-        }).then(() =>{
-            alert("환영 합니다.")
-            location.replace(`/articles`)
+        }).then(res=>{
+            if(!res.ok) throw new Error("로그인 실패");
+            else res.json();
+        }).then( data => {
+            localStorage.setItem("accessToken", data.accessToken);
+            localStorage.setItem("refreshToken", data.refreshToken);
         })
+            .catch(err =>{
+                alert("로그인 실패");
+            })
     })
 }
