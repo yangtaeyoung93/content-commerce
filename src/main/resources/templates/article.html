@@ -6,12 +6,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 </head>
 <body>
-<div class="p-5 mb-5 text-center</> bg-light">
-    <h1 class="mb-3">공구해요</h1>
-    <h4 class="mb-3">공구해요!에 오신 것을 환영합니다.</h4>
-</div>
-
 <div class="container mt-5">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
     <div class="row">
         <div class="col-lg-8">
             <article>
@@ -28,6 +24,7 @@
             </article>
         </div>
     </div>
+    <div th:replace="fragments/footer :: footer"/>
 </div>
 <script src="/js/article.js"></script>
 </body>

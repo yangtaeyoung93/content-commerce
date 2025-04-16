@@ -1,18 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>공구해요</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 <body>
-<div class="p-5 mb-5 text-center</> bg-light">
-  <h1 class="mb-3">게시글</h1>
-  <!--<p>안녕하세요, <span th:text="${user.username}"></span>님!</p>-->
-  <h4 class="mb-3">공구해요!에 오신 것을 환영합니다.</h4>
-</div>
-
 <div class="container">
+  <div th:replace="fragments/bodyHeader :: bodyHeader"/>
   <!--<th:block th:if="${user.role.name() == 'SELLER'}">-->
   <button type="button" id="create-btn" th:onclick="|location.href='@{/new-article}'|"
           class="btn btn-secondary btn-sm mb-3">글 등록
@@ -27,6 +19,7 @@
     <br>
   </div>
   <button type="button" class="btn btn-secondary" id="logout-btn" >로그아웃</button>
+  <div th:replace="fragments/footer :: footer"/>
 </div>
 <script src="/js/article.js"></script>
 </body>
