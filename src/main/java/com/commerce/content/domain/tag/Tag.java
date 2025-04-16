@@ -22,19 +22,18 @@ public class Tag {
         this.name = name;
     }
 
-    @ManyToMany
-    @JoinTable(name = "product_tag"
-            , joinColumns = @JoinColumn(name = "tag_idx")
-            , inverseJoinColumns = @JoinColumn(name = "product_idx"))
+    @ManyToMany(mappedBy = "tags")
     private List<Product> products = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "article_tag"
-            , joinColumns = @JoinColumn(name = "tag_idx")
-            , inverseJoinColumns = @JoinColumn(name = "article_idx"))
+
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     private List<Article> articles = new ArrayList<>();
 
     public Tag() {
 
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

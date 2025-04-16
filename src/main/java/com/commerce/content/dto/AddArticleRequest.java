@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class AddArticleRequest {
     private String title;
     private String content;
-    private String tagNames; // 태그 이름 목록
+    private String tagNames;
 
     public Article toEntity(User user){
         Article article = Article.builder()

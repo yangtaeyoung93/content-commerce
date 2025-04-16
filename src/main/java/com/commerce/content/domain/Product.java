@@ -31,7 +31,11 @@ public class Product {
         this.stockQuantity = stockQuantity;
     }
 
-    @ManyToMany(mappedBy = "products")
+
+    @ManyToMany
+    @JoinTable(name = "product_tag"
+            , joinColumns = @JoinColumn(name = "product_idx")
+            , inverseJoinColumns = @JoinColumn(name = "tag_idx"))
     private List<Tag> tags = new ArrayList<>();
 
     /**

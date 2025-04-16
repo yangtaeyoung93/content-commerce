@@ -1,6 +1,8 @@
 package com.commerce.content.domain;
 
 import com.commerce.content.domain.tag.Tag;
+import com.commerce.content.dto.AddArticleRequest;
+import com.commerce.content.dto.UpdateArticleRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -11,6 +13,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -44,7 +47,10 @@ public class Article {
         user.getPosts().add(this);
     }
 
-    @ManyToMany(mappedBy = "articles")
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinTable(name = "article_tag"
+            , joinColumns = @JoinColumn(name = "article_idx")
+            , inverseJoinColumns = @JoinColumn(name = "tag_idx"))
     private List<Tag> tags = new ArrayList<>();
 
     public void addTag(Tag tag) {
@@ -55,5 +61,10 @@ public class Article {
     public Article(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public void update(UpdateArticleRequest dto) {
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
     }
 }

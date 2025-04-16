@@ -4,14 +4,16 @@ if(deleteButton){
     deleteButton.addEventListener('click',event => {
         let id = document.getElementById('article-id').value;
         fetch(`/api/articles/${id}`,{
-            method:'DELETE'
+            method:'DELETE',
+            headers:{
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+            }
         }).then(()=>{
             alert("삭제가 완료되었습니다.");
             location.replace('/articles')
         })
     })
 }
-
 
 const modifyButton = document.getElementById('modify-btn')
 
@@ -23,6 +25,7 @@ if(modifyButton){
         fetch(`/api/articles/${id}`,{
             method:'PUT',
             headers:{
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
                 "Content-Type":"application/json",
             },
             body:JSON.stringify({
@@ -43,8 +46,9 @@ if(createButton){
     createButton.addEventListener('click',event => {
         fetch(`/api/articles`,{
             method:'POST',
-            headers:{
-                "Content-Type":"application/json",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+                "Content-Type": "application/json"
             },
             body:JSON.stringify({
                 title: document.getElementById('title').value,
@@ -71,9 +75,18 @@ document.addEventListener("DOMContentLoaded", function () {
             'Authorization': `Bearer ${token}`,  // JWT 토큰을 Authorization 헤더에 담아 전송
         }
     })
-        .then(response => response.json())  // 서버 응답을 JSON 형식으로 파싱
-        .then(articles => {
-            articles.forEach(article => {
+        .then(res=>{
+            if (!res.ok) {
+                throw new Error();
+            }
+
+            return res.json();
+        })  // 서버 응답을 JSON 형식으로 파싱
+        .then(data => {
+
+            console.log(data.articles)
+
+            data.articles.forEach(article => {
                 const articleCard = document.createElement('div');
                 articleCard.classList.add('card');
 

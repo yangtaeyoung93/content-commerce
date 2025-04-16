@@ -1,6 +1,7 @@
 package com.commerce.content.service;
 
 import com.commerce.content.domain.Address;
+import com.commerce.content.domain.Article;
 import com.commerce.content.domain.Role;
 import com.commerce.content.domain.User;
 import com.commerce.content.dto.AddUserRequest;
@@ -9,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -30,11 +33,6 @@ public class UserService {
                 .build()
                 ).getId();
     }
-
-    public User getUserWithPosts(User user) {
-        return userRepository.findByIdWithArticles(user.getUserId()).orElseThrow(()->new IllegalArgumentException("not found user"));
-    }
-
     public User findByUserId(String userId) {
         return userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("not found user"));
     }
