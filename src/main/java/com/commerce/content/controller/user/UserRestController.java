@@ -28,15 +28,4 @@ public class UserRestController {
         userService.save(request);
         return "redirect:/login";
     }
-
-
-    @GetMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response,@AuthenticationPrincipal CustomUserDetails userDetails) {
-
-        UsernamePasswordAuthenticationToken authentication =
-                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        refreshTokenService.deleteByUserId(userDetails.getUser().getId());
-        return "redirect:/login";
-    }
 }

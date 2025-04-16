@@ -7,6 +7,7 @@ import com.commerce.content.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 
@@ -18,18 +19,15 @@ public class RefreshTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
     private final TokenProvider tokenProvider;
-
+    @Transactional
     public String createRefreshToken(User user, Duration expiry){
         String newRefreshToken = tokenProvider.generateRefreshToken(user, Duration.ofDays(14));
-
-
-        RefreshToken save = refreshTokenRepository.save(new RefreshToken(user.getUserId(), newRefreshToken));
-
-
+        refreshTokenRepository.save(new RefreshToken(user.getUserId(), newRefreshToken));
         return newRefreshToken;
     }
 
-    public void deleteByUserId(Long id) {
-        refreshTokenRepository.deleteById(id);
+    @Transactional
+    public void deleteByUserId(String userId) {
+        refreshTokenRepository.deleteByUserId(userId);
     }
 }

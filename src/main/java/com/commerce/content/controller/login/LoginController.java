@@ -45,21 +45,13 @@ public class LoginController {
         String token = tokenProvider.generateToken(user, Duration.ofHours(1L));
         String refreshToken = refreshTokenService.createRefreshToken(user, Duration.ofDays(14));
 
-
-
         Map<String, String> result = Map.of("accessToken", token,"refreshToken",refreshToken);
         return ResponseEntity.ok(result);
     }
 
     @PostMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response, @AuthenticationPrincipal CustomUserDetails userDetails) {
-
-        UsernamePasswordAuthenticationToken authentication =
-                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        log.info("userDetails = {}",userDetails.getUser().getUserId());
-        //new SecurityContextLogoutHandler().logout(request,response, SecurityContextHolder.getContext().getAuthentication());
-        refreshTokenService.deleteByUserId(userDetails.getUser().getId());
+        refreshTokenService.deleteByUserId(userDetails.getUser().getUserId());
         return "redirect:/login";
     }
 }

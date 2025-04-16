@@ -1,13 +1,9 @@
 package com.commerce.content.dto;
 
-import com.commerce.content.domain.Role;
 import com.commerce.content.domain.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.util.StringUtils;
-
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 

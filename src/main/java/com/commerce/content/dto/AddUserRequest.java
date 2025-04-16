@@ -1,6 +1,5 @@
 package com.commerce.content.dto;
 
-import com.commerce.content.domain.Address;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
