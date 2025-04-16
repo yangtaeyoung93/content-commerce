@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +23,12 @@ public class RefreshTokenService {
     @Transactional
     public String createRefreshToken(User user, Duration expiry){
         String newRefreshToken = tokenProvider.generateRefreshToken(user, Duration.ofDays(14));
-        refreshTokenRepository.save(new RefreshToken(user.getUserId(), newRefreshToken));
+        if (refreshTokenRepository.findByUserId(user.getUserId()).isPresent()) {
+            RefreshToken refreshToken = new RefreshToken(user.getUserId(), newRefreshToken);
+        }else{
+            refreshTokenRepository.save(new RefreshToken(user.getUserId(), newRefreshToken));
+        }
+
         return newRefreshToken;
     }
 
