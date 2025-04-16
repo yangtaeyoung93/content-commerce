@@ -52,18 +52,6 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) {
         try {
-          /*  return http.authorizeHttpRequests(auth -> auth.requestMatchers(
-                            new AntPathRequestMatcher("/login"),
-                            new AntPathRequestMatcher("/signup"),
-                            new AntPathRequestMatcher("/user")
-                    ).permitAll().anyRequest().authenticated())
-                    .formLogin(formLogin -> formLogin.loginPage("/login")
-                            .defaultSuccessUrl("/articles"))
-                    .logout(logout -> logout.logoutSuccessUrl("/login")
-                            .invalidateHttpSession(true))
-                    .csrf(AbstractHttpConfigurer::disable)
-                    .build();*/
-
             // 토근 인증방식 로그인 변경
             return http.authorizeHttpRequests(auth -> auth.requestMatchers(
                             new AntPathRequestMatcher("/login"),
