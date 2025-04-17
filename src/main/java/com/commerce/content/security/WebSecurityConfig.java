@@ -55,12 +55,12 @@ public class WebSecurityConfig {
             // 토근 인증방식 로그인 변경
             return http.authorizeHttpRequests(auth -> auth.requestMatchers(
                             new AntPathRequestMatcher("/login"),
+                            new AntPathRequestMatcher("/logout"),
                             new AntPathRequestMatcher("/signup"),
-                            new AntPathRequestMatcher("/user"),
-                            new AntPathRequestMatcher("/auth/**")
+                            new AntPathRequestMatcher("/user")
                     ).permitAll()
                      .requestMatchers("/api/**").authenticated()
-                    .anyRequest().permitAll())
+                            .anyRequest().permitAll())
                     .addFilterBefore(new TokenAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
                     .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                     .csrf(AbstractHttpConfigurer::disable)

@@ -35,8 +35,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
         // 가져온 값에서 접두사 제거
         String token = getAccessToken(authorizationHeader);
-
         if (token!= null && tokenProvider.validToken(token)) {
+            System.out.println("정상 토큰");
             Authentication authentication = tokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication); //SecurityContext에 인증 정보 저장
         }

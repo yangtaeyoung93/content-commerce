@@ -5,6 +5,7 @@ if(submit){
         fetch(`/auth/login`,{
             method:'POST',
             headers:{
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
                 "Content-Type":"application/json",
             },
             body:JSON.stringify({
@@ -17,7 +18,9 @@ if(submit){
         }).then(data => {
             localStorage.setItem("accessToken", data.accessToken);
             localStorage.setItem("refreshToken", data.refreshToken);
-            location.replace(`/articles`)
+            setTimeout(() => {
+                location.replace("/articles");
+            }, 100); //
         })
             .catch(err =>{
                 alert("로그인 실패");

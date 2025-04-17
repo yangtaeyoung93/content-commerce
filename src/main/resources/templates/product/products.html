@@ -16,7 +16,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="item : ${items}">
+                <tr th:each="item : ${products}">
                     <td th:text="${item.id}"></td>
                     <td th:text="${item.name}"></td>
                     <td th:text="${item.price}"></td>
@@ -30,5 +30,6 @@
         </div>
         <div th:replace="fragments/footer :: footer"/>
     </div> <!-- /container -->
+<script src="/js/common.js"></script>
 </body>
 </html>

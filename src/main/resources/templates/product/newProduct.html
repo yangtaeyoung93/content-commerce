@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<style>
+    a {
+        text-decoration: none;
+        color: #222;
+    }
+    .gnb{
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        background-color: #fff;
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+    }
+    .gnb a{
+        /*border: 1px solid red;*/
+        width: 80px;
+        display: inline-block;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+    .gnb a:before,
+    .gnb a:after{
+        position: absolute;
+        content: attr(data-link);
+        width: 100%;
+        text-align: center;
+        transition: 0.3s;
+
+    }
+    .gnb a:before{
+        top: 0;
+        left: 0;
+
+    }
+    .gnb a:after{
+        top: 100%;
+        left: 0;
+        color: #0069d9;
+    }
+    .gnb a:hover:before{
+        top: -100%;
+    }
+    .gnb a:hover:after{
+        top: 0;
+    }
+</style>
+<body>
+
+<div class="container">
+    <div th:replace="/fragments/bodyHeader :: bodyHeader"/>
+        <input type="hidden" th:value="${product.productIdx}">
+    <div class="card">
+        <div class="card-body">
+            <label th:for="name">상품명</label>
+            <input type="text" th:value="${product.name}" class="form-control" placeholder="이름을 입력하세요">
+        </div>
+        <div class="card-body">
+            <label th:for="price">가격</label>
+            <input type="number" th:value="${product.price}" class="form-control" placeholder="가격을 입력하세요">
+        </div>
+        <div class="card-body">
+            <label th:for="stockQuantity">수량</label>
+            <input type="number" th:value="${product.stockQuantity}" class="form-control" placeholder="수량을 입력하세요">
+        </div>
+
+        <div th:if="${product.tags != null and !product.tags.isEmpty()}">
+            <div th:each="tag : ${product.tags}" class="card-body tag-item">
+                <input th:text="${tag.name}" th:value="${tag.id}" class="form-control" placeholder="(콤마,로 구분)"></input>
+            </div>
+        </div>
+        <div th:if="${product.tags == null or product.tags.isEmpty()}" class="card-body tag-item">
+            <input class="form-control empty-tag" placeholder="(콤마,로 구분)"></input>
+        </div>
+
+        <button th:if="${product.productIdx} != null" type="button" id="modify-btn" class="btn btn-primary btn-sm">수정</button>
+        <button th:if="${product.productIdx} == null" type="button" id="create-btn" class="btn btn-primary btn-sm">등록</button>
+
+    </div>
+    <br/>
+    <div th:replace="/fragments/footer :: footer" />
+</div> <!-- /container -->
+<script src="/js/common.js" defer></script>
+</body>
+
+</html>

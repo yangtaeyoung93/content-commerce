@@ -24,12 +24,12 @@ public class ArticleViewController {
     private final ArticleService articleService;
 
     @GetMapping("/articles")
-    public String getArticles(Model model) {
+    public String getArticles() {
         return "articleList";
     }
 
     @GetMapping("/new-article")
-    public String newArticle(@RequestParam(required = false) Long id, Model model){
+    public String newArticle(@AuthenticationPrincipal CustomUserDetails userDetails,@RequestParam(required = false) Long id, Model model){
         if(id == null){
             model.addAttribute("article", new ArticleViewResponse());
         }else{
