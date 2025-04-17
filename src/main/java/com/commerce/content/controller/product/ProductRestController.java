@@ -20,7 +20,7 @@ public class ProductRestController {
     @PostMapping("/products")
     public ProductViewResponse addProducts(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody AddProductRequest request) {
 
-        
+
 
 
 
