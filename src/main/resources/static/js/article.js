@@ -83,9 +83,6 @@ document.addEventListener("DOMContentLoaded", function () {
             return res.json();
         })  // 서버 응답을 JSON 형식으로 파싱
         .then(data => {
-
-            console.log(data.articles)
-
             data.articles.forEach(article => {
                 const articleCard = document.createElement('div');
                 articleCard.classList.add('card');

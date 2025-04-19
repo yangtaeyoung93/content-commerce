@@ -38,6 +38,11 @@ public class Product {
             , inverseJoinColumns = @JoinColumn(name = "tag_idx"))
     private List<Tag> tags = new ArrayList<>();
 
+    public void addTag(Tag tag) {
+        tags.add(tag);
+        tag.getProducts().add(this); // 양방향 유지!
+    }
+
     /**
      * 재고 수량 증가
      * @param quantity

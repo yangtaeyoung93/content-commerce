@@ -5,6 +5,10 @@
     <div class="container">
         <div th:replace="fragments/bodyHeader :: bodyHeader"/>
         <div>
+            <button type="button" id="create-btn" th:onclick="|location.href='@{/new-product}'|"
+                    class="btn btn-secondary btn-sm mb-3">상품 등록</button>
+        </div>
+        <div>
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -21,8 +25,8 @@
                     <td th:text="${item.name}"></td>
                     <td th:text="${item.price}"></td>
                     <td th:text="${item.stockQuantity}"></td>
-                    <td>
-                        <a href="#" th:href="@{/items/{id}/edit/{type} (id=${item.id},type=${item.dtype})}" class="btn btn-primary" role="button">수정</a>
+                   <td>
+                        <a href="#" th:href="@{/new-product?id={id} (id=${item.id})}" class="btn btn-primary" role="button">수정</a>
                     </td>
                 </tr>
                 </tbody>

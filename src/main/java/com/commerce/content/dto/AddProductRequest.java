@@ -19,12 +19,11 @@ public class AddProductRequest {
     private int stockQuantity;
     private String tagNames;
 
-
     public Product toEntity(){
         return Product.builder()
-                .name(name)
-                .price(price)
-                .stockQuantity(stockQuantity)
+                .name(this.name)
+                .price(this.price)
+                .stockQuantity(this.stockQuantity)
                 .build();
     }
 }
