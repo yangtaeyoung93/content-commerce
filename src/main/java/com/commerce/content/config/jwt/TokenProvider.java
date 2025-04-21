@@ -13,9 +13,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,21 +24,19 @@ public class TokenProvider {
     private final UserDetailService userDetailService;
 
     public String generateToken(User user, Duration expireDt) {
-        Date now = new Date();
-        return makeToken(user, new Date(now.getTime() + expireDt.toMillis()));
+        return makeToken(user, new Date(new Date().getTime() + expireDt.toMillis()));
     }
 
     private String makeToken(User user, Date expiry) {
-        Date now = new Date();
 
         return Jwts.builder()
                 .setIssuer(jwtProperties.getIssuer())
-                .setIssuedAt(now)
+                .setIssuedAt(new Date())
                 .setExpiration(expiry)
                 .setSubject(user.getUserId())
                 .claim("idx",user.getId())
                 .claim("name",user.getUsername())
-                .claim("role",user.getRole().name())
+                .claim("roles",List.of("ROLE_" + user.getRole().name()))
                 .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
                 .compact();
     }
@@ -68,12 +65,18 @@ public class TokenProvider {
 
     public Authentication getAuthentication(String token) {
         Claims claims = getClaims(token);
-        Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
+        String userId = claims.getSubject();
 
-        String userId = getUserId(token);
+        List<String> roles = claims.get("roles", List.class);
+        roles = Optional.ofNullable(roles).orElse(List.of());
+
+        List<SimpleGrantedAuthority> authorities =
+                roles.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
 
         UserDetails userDetails = userDetailService.loadUserByUsername(userId);
-        //return new UsernamePasswordAuthenticationToken(new org.springframework.security.core.userdetails.User(claims.getSubject(), "", authorities), token, authorities);
+
         return new UsernamePasswordAuthenticationToken(userDetails, token, authorities);
     }
 

@@ -1,24 +1,26 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: header" />
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head th:replace="fragments/header :: header"/>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 <body>
 <div class="container">
-  <div th:replace="fragments/bodyHeader :: bodyHeader"/>
-  <!--<th:block th:if="${user.role.name() == 'SELLER'}">-->
-  <button type="button" id="create-btn" th:onclick="|location.href='@{/new-article}'|"
-          class="btn btn-secondary btn-sm mb-3">글 등록
-  </button>
-  </th:block>
-  <div class="row-6">
-    <div class="card">
-      </div>
-      <div class="card-body">
-      </div>
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div th:if="${user.role.name() == 'SELLER'}">
+        <button type="button" id="create-btn" th:onclick="|location.href='@{/new-article}'|"
+                class="btn btn-secondary btn-sm mb-3">글 등록
+        </button>
+    </div>
+
+    <div class="row-6">
+        <div class="card">
+        </div>
+        <div class="card-body">
+        </div>
     </div>
     <br>
-  </div>
-  <div th:replace="fragments/footer :: footer"/>
+</div>
+<div th:replace="fragments/footer :: footer"/>
 </div>
 <script src="/js/article.js"></script>
 <script src="/js/common.js" defer></script>

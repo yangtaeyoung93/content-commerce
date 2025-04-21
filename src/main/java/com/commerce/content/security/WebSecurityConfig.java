@@ -3,6 +3,8 @@ package com.commerce.content.security;
 import com.commerce.content.config.TokenAuthenticationFilter;
 import com.commerce.content.config.jwt.TokenProvider;
 import com.commerce.content.service.UserDetailService;
+import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,25 +17,34 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.net.Authenticator;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
-@Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@Configuration
 @RequiredArgsConstructor
-public class WebSecurityConfig {
+public class WebSecurityConfig{
 
     private final TokenProvider tokenProvider;
     private final UserDetailService userDetailService;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final TokenAuthenticationFilter tokenAuthenticationFilter;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
-
+    @PostConstruct
+    public void init() {
+        SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+    }
     /**
      * 스프링 시큐리티 기능 비활성화
      * @return
@@ -60,9 +71,13 @@ public class WebSecurityConfig {
                             new AntPathRequestMatcher("/user")
                     ).permitAll()
                      .requestMatchers("/api/**").authenticated()
-                            .anyRequest().permitAll())
-                    .addFilterBefore(new TokenAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
-                    .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                            .anyRequest().permitAll()
+                    )
+                    .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)) // 하이브리드 세션 추가 필수
+                    .exceptionHandling(exception->exception
+                            .authenticationEntryPoint(customAuthenticationEntryPoint)
+                            .accessDeniedHandler(customAccessDeniedHandler))
+                    .addFilterBefore(tokenAuthenticationFilter, SecurityContextPersistenceFilter.class)
                     .csrf(AbstractHttpConfigurer::disable)
                     .build();
 

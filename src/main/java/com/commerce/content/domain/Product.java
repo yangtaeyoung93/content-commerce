@@ -31,7 +31,6 @@ public class Product {
         this.stockQuantity = stockQuantity;
     }
 
-
     @ManyToMany
     @JoinTable(name = "product_tag"
             , joinColumns = @JoinColumn(name = "product_idx")

@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,6 +41,7 @@ public class ArticleRestController {
     }
 
     @PostMapping("/articles")
+    @PreAuthorize("hasRole('SELLER')")
     public ResponseEntity<Article> addArticle(@RequestBody AddArticleRequest request,
                                               @AuthenticationPrincipal CustomUserDetails userDetails) {
         User user = userService.findByUserId(userDetails.getUser().getUserId());
@@ -48,6 +50,7 @@ public class ArticleRestController {
     }
 
     @PutMapping("/articles/{id}")
+    @PreAuthorize("hasRole('SELLER') and @resourceSecurity.isArticleOwner(#id, authentication)")
     public ResponseEntity<ArticleListViewResponse> updateArticle(@PathVariable("id")Long id,
                                                  @AuthenticationPrincipal CustomUserDetails userDetails,
                                                  @RequestBody UpdateArticleRequest request){
@@ -56,6 +59,7 @@ public class ArticleRestController {
     }
 
     @DeleteMapping("/articles/{id}")
+    @PreAuthorize("hasRole('SELLER') and @resourceSecurity.isArticleOwner(#id, authentication)")
     public ResponseEntity<ArticleListViewResponse> deleteArticle(@PathVariable("id")Long id,
                                                                  @AuthenticationPrincipal CustomUserDetails userDetails
                                                                  ){

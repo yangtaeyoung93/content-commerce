@@ -55,10 +55,20 @@ if(createButton){
                 content: document.getElementById('content').value,
                 tagNames: document.getElementById('tagNames').value
             })
-        }).then(() =>{
-            alert("등록이 완료되었습니다.")
+        }).then(res =>{
+            if (!res.ok) {
+                return res.json().then( err => {
+                    if(`${err.error}` == 403 ){
+                        alert(`등록 실패: 권한이 없습니다.`);
+                        throw new Error('등록 실패');
+                    }
+                })
+            }
+            alert("등록이 완료되었습니다.");
             location.replace(`/articles`)
-        })
+        }).catch(err => {
+            console.error("네트워크 오류", err);
+        });
     })
 }
 

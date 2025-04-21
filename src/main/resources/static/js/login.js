@@ -1,12 +1,12 @@
 const submit = document.getElementById('submit')
 
 if(submit){
-    submit.addEventListener('click',event => {
+    submit.addEventListener('click',async(e) => {
+        e.preventDefault();
         fetch(`/auth/login`,{
             method:'POST',
             headers:{
-                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
-                "Content-Type":"application/json",
+                "Content-Type":"application/json"
             },
             body:JSON.stringify({
                 userId: document.getElementById('username').value,

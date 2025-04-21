@@ -8,6 +8,7 @@ import com.commerce.content.service.RefreshTokenService;
 import com.commerce.content.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +16,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
@@ -34,14 +33,14 @@ public class LoginController {
     private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody AddLoginRequest request){
+    public ResponseEntity login(@RequestBody AddLoginRequest request, HttpServletRequest httpRequest){
 
         Authentication authenticate = authentication.authenticate(new UsernamePasswordAuthenticationToken(request.getUserId(), request.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authenticate);
-
         CustomUserDetails userDetails = (CustomUserDetails) authenticate.getPrincipal();
-
         User user = userService.findByUserId(userDetails.getUsername());
+
+        httpRequest.getSession(true).setAttribute("loginUser", user);
+
         String token = tokenProvider.generateToken(user, Duration.ofHours(1L));
         String refreshToken = refreshTokenService.createRefreshToken(user, Duration.ofDays(14));
 
@@ -51,6 +50,10 @@ public class LoginController {
 
     @PostMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        HttpSession session = request.getSession();
+        if (session != null) {
+            session.invalidate(); // 세션 제거
+        }
         refreshTokenService.deleteByUserId(userDetails.getUser().getUserId());
         return "redirect:/login";
     }

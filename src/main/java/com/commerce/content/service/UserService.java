@@ -29,7 +29,7 @@ public class UserService {
                 .password(bCryptPasswordEncoder.encode(request.getPassword()))
                 .phonNumber(request.getPhoneNumber())
                 .address(new Address(request))
-                .role(Role.SELLER)
+                .role(Role.BUYER)
                 .build()
                 ).getId();
     }
